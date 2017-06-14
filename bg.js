@@ -28,13 +28,14 @@ chrome.webRequest.onHeadersReceived.addListener(function (details) {
       var header = headers[i];
 
       if (cacheHeaders.indexOf(header.name.toLowerCase()) !== -1) {
+          var val = header.value.toLowerCase();
           button.active = true;
-          // console.log( header.value );
-          if (header.value.indexOf('HIT') !== -1) {
+          // console.log( header.name, val, val.indexOf('hit') );
+          if (val.indexOf('hit') !== -1) {
               button.status = 'hit';
-          } else if (header.value.indexOf('BYPASS') !== -1) {
+          } else if (val.indexOf('bypass') !== -1) {
               button.status = 'pass';
-          } else if (header.value.indexOf('MISS') !== -1) {
+          } else if (val.indexOf('miss') !== -1) {
               button.status = 'miss';
           }  
       }
@@ -45,8 +46,9 @@ chrome.webRequest.onHeadersReceived.addListener(function (details) {
       for (var i = 0; i < headers.length; i++) {
         var header = headers[i];
         if (partialCacheHeaders.indexOf(header.name.toLowerCase()) !== -1) {
+          var val = header.value.toLowerCase();
           button.active = true;
-          if (header.value.indexOf('HIT') !== -1) {
+          if (val.indexOf('hit') !== -1) {
               button.status = 'partial';
           }
         }
