@@ -3,7 +3,7 @@
   "name": "Cache Hit",
   "description": "Shows if cache was hit or miss",
   "author":"Jerry Price",  
-  "version": "1.0.1",
+  "version": "1.1.0",
   "icons": { 
     "16": "icon16.png",
     "48": "icon48.png",
@@ -11,6 +11,7 @@
   },
   "browser_action": {
     "default_icon": "icon128.png",
+    "default_popup": "popup.html",
     "default_title": "checking...."
   },
   "background": {

@@ -5,6 +5,11 @@ var button = {
   'hits':   null
 };
 
+var info = {
+  cache: '',
+  headers: []
+};
+
 
 chrome.webRequest.onHeadersReceived.addListener(function (details) {
   if (details.type === 'main_frame') {
@@ -16,7 +21,9 @@ chrome.webRequest.onHeadersReceived.addListener(function (details) {
     var headers = details.responseHeaders;
     var cacheHeaders = [
       'x-cache',
-      'x-fastcgi-cache'
+      'x-fastcgi-cache',
+      'varnish-cache',
+      'cf-cache-status'
     ];
 
     var partialCacheHeaders = [
@@ -26,9 +33,12 @@ chrome.webRequest.onHeadersReceived.addListener(function (details) {
 
     for (var i = 0; i < headers.length; i++) {
       var header = headers[i];
+      
+      info.headers.push(header.name + ': ' + header.value );
 
       if (cacheHeaders.indexOf(header.name.toLowerCase()) !== -1) {
           var val = header.value.toLowerCase();
+          
           button.active = true;
           // console.log( header.name, val, val.indexOf('hit') );
           if (val.indexOf('hit') !== -1) {
@@ -37,7 +47,9 @@ chrome.webRequest.onHeadersReceived.addListener(function (details) {
               button.status = 'pass';
           } else if (val.indexOf('miss') !== -1) {
               button.status = 'miss';
-          }  
+          }
+
+          info.cache = header.name + ': ' + button.status;
       }
       
       button.hits = (header.name === 'X-Cache-Hits') ? parseInt(header.value, 10) : null;
