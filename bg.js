@@ -6,7 +6,7 @@ var button = {
 };
 
 var info = {
-  cache: '',
+  cache: [],
   headers: []
 };
 
@@ -19,6 +19,7 @@ chrome.webRequest.onHeadersReceived.addListener(function (details) {
     button.hits = null;
 
     var headers = details.responseHeaders;
+
     var cacheHeaders = [
       'x-cache',
       'x-fastcgi-cache',
@@ -30,6 +31,9 @@ chrome.webRequest.onHeadersReceived.addListener(function (details) {
       'x-drupal-cache',
       'x-ee-cache'
     ];
+
+    info.cache = [];
+    info.headers = [];
 
     for (var i = 0; i < headers.length; i++) {
       var header = headers[i];
@@ -49,7 +53,7 @@ chrome.webRequest.onHeadersReceived.addListener(function (details) {
               button.status = 'miss';
           }
 
-          info.cache = header.name + ': ' + button.status;
+          info.cache.push(header.name + ': ' + button.status);
       }
       
       button.hits = (header.name === 'X-Cache-Hits') ? parseInt(header.value, 10) : null;
