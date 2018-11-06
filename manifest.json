@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
   "name": "Cache Hit",
-  "description": "Shows if cache was hit or miss",
+  "description": "Shows if cache was HIT or MISS for the current page/resource.",
   "author":"Jerry Price",  
-  "version": "1.1.0",
+  "version": "1.1.1",
   "icons": { 
     "16": "icon16.png",
     "48": "icon48.png",
